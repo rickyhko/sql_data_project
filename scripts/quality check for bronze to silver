@@ -1,0 +1,59 @@
+
+/* ===================================================================================
+							Quality Check
+ ====================================================================================*/                           
+-- check unwanted spaces
+SELECT cst_firstname
+FROM bronze.crm_cust_info
+WHERE cst_firstname != trim(cst_firstname);
+
+SELECT cst_lastname
+FROM bronze.crm_cust_info
+WHERE cst_lastname != trim(cst_lastname);
+
+-- check for nulls or negative numbers
+SELECT *
+FROM bronze.crm_prd_info
+WHERE prd_cost <= 0 OR prd_cost IS NULL;
+
+-- data standarization and consistency
+
+SELECT DISTINCT prd_line
+FROM bronze.crm_prd_info;
+
+-- check for invalid date orders
+-- this one is a little bit tricky to solve. ask the manager for answer how to do it or any additional data
+-- either to change it in excel or using start date as lead
+
+SELECT *
+FROM bronze.crm_prd_info
+WHERE prd_end_dt < prd_start_dt;
+
+/* to put it simply
+LEAD(prd_start_dt) OVER (
+        PARTITION BY prd_key
+        ORDER BY prd_start_dt
+    ) - INTERVAL 1 DAY AS prd_end_dt_test
+*/
+
+SELECT *
+FROM bronze.crm_sales_details
+WHERE sls_order_dt > sls_ship_dt OR sls_order_dt > sls_due_dt;
+
+-- check if there will be any issues with connecting to other table
+-- expected result : no result
+
+SELECT 
+	sls_ord_num,
+    sls_prd_key,
+    sls_cust_id,
+    sls_order_dt,
+    sls_ship_dt,
+    sls_due_dt,
+    sls_sales,
+    sls_quantity,
+    sls_price
+FROM bronze.crm_sales_details
+WHERE sls_prd_key NOT IN ( SELECT prd_key FROM silver.crm_prd_info);
+
+

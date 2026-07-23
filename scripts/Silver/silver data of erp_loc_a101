@@ -1,0 +1,40 @@
+SELECT 
+	cid,
+    replace(cid,'-','') cid, -- to match cst_key to crm_cust_info the matching data 
+    Cntry,
+    CASE
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'DE' THEN 'Germany' -- I use replace because there is non printable character included in all gen
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'US' THEN 'USA'
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = '' THEN 'Unknown'
+    ELSE Cntry
+END AS Cntry
+FROM bronze.erp_loc_a101;
+
+-- standarize
+
+select DISTINCT cntry,
+CASE
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'DE' THEN 'Germany' -- I use replace because there is non printable character included in all gen
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'US' THEN 'USA'
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = '' THEN 'Unknown'
+    ELSE Cntry
+END AS Cntry
+FROM bronze.erp_loc_a101;
+
+-- input the data to silver
+
+
+
+INSERT INTO silver.erp_loc_a101 (cid,cntry)
+SELECT
+REPLACE(cid,'-','') cid, -- to match cst_key to crm_cust_info the matching data 
+CASE
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'DE' THEN 'Germany' -- I use replace because there is non printable character included in all gen
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = 'US' THEN 'USA'
+    WHEN UPPER(TRIM(REPLACE(cntry, CHAR(13), ''))) = '' THEN 'Unknown'
+    ELSE Cntry
+END AS Cntry
+FROM bronze.erp_loc_a101;
+
+SELECT *
+FROM silver.erp_loc_a101;

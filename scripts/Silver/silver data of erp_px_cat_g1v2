@@ -1,0 +1,37 @@
+SELECT 
+ID,
+CAT,
+SUBCAT,
+CASE
+    WHEN UPPER(TRIM(REPLACE(MAINTENANCE, CHAR(13), ''))) = 'YES' THEN 'Yes' -- I use replace because there is non printable character included in all gen
+    ELSE MAINTENANCE
+END AS MAINTENANCE
+FROM bronze.erp_px_cat_g1v2;
+
+-- check unwanted spaces
+
+SELECT * FROM bronze.erp_px_cat_g1v2
+WHERE cat != TRIM(cat) OR subcat != TRIM(subcat) OR maintenance != TRIM(maintenance);
+
+-- standarization 
+
+SELECT DISTINCT CASE
+    WHEN UPPER(TRIM(REPLACE(MAINTENANCE, CHAR(13), ''))) = 'YES' THEN 'Yes' -- I use replace because there is non printable character included in all gen
+    ELSE MAINTENANCE
+END AS MAINTENANCE
+FROM bronze.erp_px_cat_g1v2;
+
+-- insert to silver
+
+INSERT INTO silver.erp_px_cat_g1v2 ( ID, CAT, SUBCAT, MAINTENANCE )
+SELECT 
+ID,
+CAT,
+SUBCAT,
+CASE
+    WHEN UPPER(TRIM(REPLACE(MAINTENANCE, CHAR(13), ''))) = 'YES' THEN 'Yes' -- I use replace because there is non printable character included in all gen
+    ELSE MAINTENANCE
+END AS MAINTENANCE
+FROM bronze.erp_px_cat_g1v2;
+
+SELECT * FROM silver.erp_px_cat_g1v2;

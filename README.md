@@ -27,5 +27,6 @@ These insights empower stakeholders with key business metrics, enabling strategi
 This project is licensed under the MIT License. You are free to use, modify, and share this project with proper attribution.
 
 🌟 About Me
-Hi there! I'm Ricky Handoko. I’m an sales professional and passionate data analyst on a mission to share knowledge and make working with data enjoyable and engaging!
+Hi there! I'm Ricky Handoko. I’m an sales professional and been passionate in data analyst.
 Let's stay in touch!
+Linkedin : https://www.linkedin.com/in/ricky-handoko-39b062153/

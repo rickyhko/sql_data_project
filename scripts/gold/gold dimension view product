@@ -1,0 +1,76 @@
+SELECT
+	prd_id, 
+    prd_cat_id,
+    prd_key, 
+    prd_nm, 
+    prd_cost, 
+    prd_line, 
+    prd_start_dt, 
+    prd_end_dt
+FROM silver.crm_prd_info pn;
+
+-- check on current information that not closed yet
+
+SELECT
+	pn.prd_id, 
+    pn.prd_cat_id,
+    pn.prd_key, 
+    pn.prd_nm, 
+    pn.prd_cost, 
+    pn.prd_line, 
+    pn.prd_start_dt,
+    pc.cat,
+    pc.subcat,
+    pc.maintenance
+FROM silver.crm_prd_info pn
+LEFT JOIN silver.erp_px_cat_g1v2 pc
+ON pn.prd_cat_id = pc.id
+WHERE prd_end_dt IS NULL; -- filter out all historical data 
+
+-- see for any duplicates
+
+SELECT 
+    prd_key,
+    COUNT(*)
+FROM
+( SELECT
+	pn.prd_id, 
+    pn.prd_key, 
+    pn.prd_nm,
+    pn.prd_cat_id,
+    pc.cat,
+    pc.subcat,
+    pn.prd_cost, 
+    pn.prd_line, 
+    pn.prd_start_dt,
+    pc.maintenance
+FROM silver.crm_prd_info pn
+LEFT JOIN silver.erp_px_cat_g1v2 pc
+ON pn.prd_cat_id = pc.id
+WHERE prd_end_dt IS NULL )t
+GROUP BY prd_key
+HAVING   COUNT(*) > 1;
+
+-- reposition and rename
+
+CREATE VIEW gold.dim_product AS
+SELECT
+ROW_NUMBER () OVER( ORDER BY pn.prd_start_dt, pn.prd_id) product_key,
+	pn.prd_id product_id, 
+    pn.prd_key product_number, 
+    pn.prd_nm product_name,
+    pn.prd_cat_id category_id,
+    pc.cat category,
+    pc.subcat sub_category,
+    pc.maintenance,
+    pn.prd_cost cost, 
+    pn.prd_line product_line, 
+    pn.prd_start_dt start_date
+FROM silver.crm_prd_info pn
+LEFT JOIN silver.erp_px_cat_g1v2 pc
+ON pn.prd_cat_id = pc.id
+WHERE prd_end_dt IS NULL;
+
+SELECT * FROM gold.dim_product;
+
+SELECT * FROM silver.crm_prd_info;

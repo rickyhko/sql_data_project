@@ -1,0 +1,26 @@
+-- foreign key integrity
+-- if nothing there means everything matching properly
+
+SELECT *
+FROM gold.fact_sales F
+LEFT JOIN gold.dim_customer c
+ON c.customer_key = f.customer_key
+LEFT JOIN gold.dim_product p
+ON p.product_key = f.product_key
+WHERE p.product_key IS NULL;
+
+-- checking gold.product_key
+
+SELECT product_key,
+count(*) duplicate_count
+FROM gold.dim_product
+GROUP BY product_key
+HAVING COUNT(*) > 1;
+
+-- checking gold.dim_customer
+
+SELECT customer_key,
+count(*) duplicate_count
+FROM gold.dim_customer
+GROUP BY customer_key
+HAVING COUNT(*) > 1;

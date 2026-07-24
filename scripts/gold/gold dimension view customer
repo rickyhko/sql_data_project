@@ -1,0 +1,75 @@
+-- check on the join if there is any duplicates data
+
+SELECT 
+    cst_id,
+    COUNT(*)
+FROM
+(
+    SELECT
+        ci.cst_id,
+        ci.cst_key,
+        ci.cst_firstname,
+        ci.cst_lastname,
+        ci.cst_marital_status,
+        ci.cst_gndr,
+        ci.cst_create_date,
+        ca.bdate,
+        ca.gen,
+        la.cntry
+    FROM silver.crm_cust_info ci
+    LEFT JOIN silver.erp_cust_az12 ca
+        ON ci.cst_key = ca.cid
+    LEFT JOIN silver.erp_loc_a101 la
+        ON ci.cst_key = la.cid
+) t
+GROUP BY cst_id
+HAVING COUNT(*) > 1;
+
+/* 
+we have 2 gender on the table so ask for the master data. 
+in this case cst_gndr is the master 
+*/
+
+SELECT DISTINCT
+ ci.cst_gndr,
+ ca.gen,
+  CASE WHEN ci.cst_gndr != 'unknown' THEN ci.cst_gndr  -- CRM is the master for gender info
+  ELSE COALESCE (ca.gen,'unknown')
+  END new_gen
+ FROM silver.crm_cust_info ci
+ LEFT JOIN silver.erp_cust_az12 ca
+ ON ci.cst_key = ca.cid;
+ 
+ -- rename all column to make it easier and make view for easier debugging
+ 
+ CREATE VIEW gold.dim_customer AS 
+	SELECT
+    ROW_NUMBER() OVER (ORDER BY cst_id) customer_key,
+        ci.cst_id customer_id,
+        ci.cst_key customer_number,
+        ci.cst_firstname first_name,
+        ci.cst_lastname last_name,
+        ci.cst_marital_status marital_status,
+        CASE WHEN ci.cst_gndr != 'unknown' THEN ci.cst_gndr  -- CRM is the master for gender info
+  ELSE COALESCE (ca.gen,'unknown')
+  END gender,
+        ci.cst_create_date create_date,
+        ca.bdate birth_date,
+        la.cntry country
+    FROM silver.crm_cust_info ci
+    LEFT JOIN silver.erp_cust_az12 ca
+        ON ci.cst_key = ca.cid
+    LEFT JOIN silver.erp_loc_a101 la
+        ON ci.cst_key = la.cid;
+        
+-- check on view
+
+SELECT DISTINCT *
+FROM gold.dim_customer;
+        
+-- delete invalid data
+
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE FROM silver.crm_cust_info
+WHERE cst_key = 'SF566';

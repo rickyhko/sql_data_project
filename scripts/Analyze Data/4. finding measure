@@ -1,0 +1,89 @@
+-- FIND THE TOTAL SALES
+SELECT SUM(sales_amount) total_quantity FROM gold.fact_sales;
+
+-- FIND HOW MANY ITEM ARE 
+SELECT SUM(quantity) total_quantity FROM gold.fact_sales;
+
+-- FIND THE AVERAGE SELLING PRICE 
+SELECT AVG(price) avg_price FROM gold.fact_sales;
+
+-- FIND THE TOTAL NUMBER OF ORDERS
+SELECT COUNT(order_number) total_orders FROM gold.fact_sales;
+SELECT COUNT(DISTINCT order_number) total_orders FROM gold.fact_sales; -- eliminate duplicates
+
+-- FIND THE TOTAL NUMBER OF PRODUCTS
+SELECT COUNT(product_key) total_products FROM gold.dim_product;
+SELECT COUNT(DISTINCT product_key) total_products FROM gold.dim_product; -- eliminate duplicates
+
+-- FIND THE TOTAL NUMBER OF CUSTOMERS
+SELECT COUNT(customer_key) total_customers FROM gold.dim_customer;
+SELECT COUNT(DISTINCT customer_key) total_customers FROM gold.dim_customer; -- eliminate duplicates
+
+-- FIND THE TOTAL NUMBER OF CUSTOMERS THAT HAS PLACED AN ORDER
+SELECT COUNT(customer_key) total_customers FROM gold.fact_sales;
+SELECT COUNT(DISTINCT customer_key) total_customers FROM gold.fact_sales; -- eliminate duplicates
+
+SELECT * FROM gold.fact_sales;
+
+-- for report that show all key metrics of the business
+SELECT 'total Sales' as measure_name, SUM(sales_amount) AS measure_value FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'total Quantity' as measure_name, SUM(quantity) AS measure_value FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'Average Price' as measure_name, AVG(price) AS measure_value FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'total Nr. Order' as measure_name, COUNT(DISTINCT order_number) AS measure_value FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'total Nr. Product' as measure_name, COUNT(product_key) AS measure_value FROM gold.dim_product
+
+UNION ALL
+
+SELECT 'total Nr. Customer' as measure_name, COUNT(customer_key) AS measure_value FROM gold.dim_customer
+
+UNION ALL
+
+SELECT 'total Sales' as measure_name, COUNT(DISTINCT customer_key) AS measure_value FROM gold.fact_sales;
+
+
+-- or to delete all.0000 we can use cast
+
+SELECT 'Total Sales' AS measure_name, CAST(SUM(sales_amount) AS UNSIGNED) AS measure_value
+FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'Total Quantity', CAST(SUM(quantity) AS UNSIGNED)
+FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'Average Price', CAST(AVG(price) AS UNSIGNED)
+FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'Total Nr. Order', COUNT(DISTINCT order_number)
+FROM gold.fact_sales
+
+UNION ALL
+
+SELECT 'Total Nr. Product', COUNT(product_key)
+FROM gold.dim_product
+
+UNION ALL
+
+SELECT 'Total Nr. Customer', COUNT(customer_key)
+FROM gold.dim_customer
+
+UNION ALL
+
+SELECT 'Customers With Orders', COUNT(DISTINCT customer_key)
+FROM gold.fact_sales;

@@ -1,0 +1,19 @@
+-- Calculate the total sales per month 
+-- and the running total of sales over time 
+
+SELECT
+    DATE_FORMAT(month_start, '%Y-%b') AS order_date,
+    total_sales,
+    total_customers,
+    total_quantity
+FROM (
+    SELECT
+        DATE_FORMAT(order_date, '%Y-%m-01') AS month_start,
+        SUM(sales_amount) AS total_sales,
+        COUNT(DISTINCT customer_key) AS total_customers,
+        SUM(quantity) AS total_quantity
+    FROM gold.fact_sales
+    WHERE order_date IS NOT NULL
+    GROUP BY DATE_FORMAT(order_date, '%Y-%m-01')
+) AS t
+ORDER BY month_start;

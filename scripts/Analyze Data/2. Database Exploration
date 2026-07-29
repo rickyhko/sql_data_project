@@ -1,0 +1,8 @@
+-- explore all objects in the database
+
+SELECT * FROM INFORMATION_SCHEMA.TABLES;
+
+-- explore all collumns in the database
+
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE table_name = 'dim_customers';

@@ -21,7 +21,7 @@ Documentation: Provide clear documentation of the data model to support both bus
 
 # BI: Analytics & Reporting (Data Analysis)
 
-## --Objective
+# --Objective
 
 Develop SQL-based analytics to deliver detailed insights into:
 Customer Behavior

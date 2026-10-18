@@ -2,7 +2,7 @@ Dictionary
 
 [BI](https://github.com/rickyhko/sql_data_project/blob/main/README.md#bi-analytics--reporting-data-analysis)
 
-## --Objective
+[Objective](https://github.com/rickyhko/sql_data_project/blob/main/README.md#bi-analytics--reporting-data-analysis)
 
 # sql_data_project
 Building a modern data warehouse with SQL Server, including ETL processes, data modeling, and analytics.

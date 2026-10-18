@@ -1,3 +1,7 @@
+Dictionary
+# BI
+## --Objective
+
 # sql_data_project
 Building a modern data warehouse with SQL Server, including ETL processes, data modeling, and analytics.
 
@@ -13,9 +17,9 @@ Documentation: Provide clear documentation of the data model to support both bus
 
 ---------------------------------------------------------------------------------------------------------------------
 
-BI: Analytics & Reporting (Data Analysis)
+# BI: Analytics & Reporting (Data Analysis)
 
---Objective
+## --Objective
 
 Develop SQL-based analytics to deliver detailed insights into:
 Customer Behavior

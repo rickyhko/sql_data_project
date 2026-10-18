@@ -1,6 +1,6 @@
 Dictionary
 
-[BI](# BI)
+([# BI](https://github.com/rickyhko/sql_data_project/blob/main/README.md#bi-analytics--reporting-data-analysis))
 
 ## --Objective
 

@@ -29,6 +29,6 @@ This project is licensed under the MIT License. You are free to use, modify, and
 🌟 About Me
 Hi there! I'm Ricky Handoko. I’m an sales professional and been passionate in data analyst.
 Let's stay in touch!
-Linkedin : https://www.linkedin.com/in/ricky-handoko-39b062153/
+Linkedin : [linkedin](https://www.linkedin.com/in/ricky-handoko-39b062153/)
 
 [test](https://github.com/rickyhko/sql_data_project/blob/main/scripts/gold/Test%20and%20check%20gold%20view)

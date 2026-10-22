@@ -18,6 +18,5 @@ Customer Behavior
 Product Performance
 Sales Trends
 These insights empower stakeholders with key business metrics, enabling strategic decision-making.
-
-# [Step by step how i analyze the data](https://github.com/rickyhko/sql_data_project/tree/main/scripts/Analyze%20Data)
+[Step by step how i analyze the data](https://github.com/rickyhko/sql_data_project/tree/main/scripts/Analyze%20Data)
 

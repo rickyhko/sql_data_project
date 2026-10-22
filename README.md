@@ -39,4 +39,22 @@ Truncates the bronze tables before loading data.
 
 Uses the BULK INSERT command to load data from csv files to bronze tables.   
 
+## [silver](https://github.com/rickyhko/sql_data_project/tree/main/scripts/Silver)
 
+This stored procedure transforms and cleanses data from the 'bronze' schema into the 'silver' schema. It performs the following actions:
+
+Cleanses and standardizes data formats (such as dates, text casing, and whitespace handling).
+
+Validates data correctness.
+
+Loads valid, high-quality records into the silver schema tables.
+
+## [gold](https://github.com/rickyhko/sql_data_project/tree/main/scripts/gold)
+
+This script creates views for the Gold layer in the data warehouse.   
+
+The Gold layer represents the final dimension and fact tables (Star Schema).   
+
+Each view performs transformations and combines data from the Silver layer to produce a clean, enriched, and business-ready dataset.   
+
+Usage: These views can be queried directly for analytics and reporting
